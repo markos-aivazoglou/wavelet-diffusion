@@ -13,19 +13,24 @@ This paper has been accepted at the [FAIEMA 2025](https://www.faiema.org/) confe
 Denoising diffusion models have emerged as a powerful class of deep generative models, yet they remain computationally demanding due to their iterative nature and high-dimensional input space. In this work, we propose a novel framework that integrates wavelet decomposition into diffusion-based generative models to reduce spatial redundancy and improve training and sampling efficiency. By operating in the wavelet domain, our approach enables a compact multiresolution representation of images, facilitating faster convergence and more efficient inference with minimal architectural modifications. We assess this framework using UNets and UKANs as denoising backbones across multiple diffusion models and benchmark datasets. Our experiments show that a 1-level wavelet decomposition achieves a speedup of up to three times in training, with competitive Fréchet Inception Distance (FID) scores. We further demonstrate that KAN-based architectures offer lightweight alternatives to convolutional backbones, enabling parameter-efficient generation. In-depth analysis of sampling dynamics, including the impact of implicit configurations and wavelet depth, reveals trade-offs between speed, quality, and resolution-specific sensitivity. These findings offer practical insights into the design of efficient generative models and highlight the potential of frequency-domain learning for future generative modeling research.
 
 ## Architecture Overview
-![Architecture Overview width:200px](figures/wddpm-diffusion-new.png)
+<img src="figures/wddpm-diffusion-new.png" alt="Architecture Overview" width="100%">
 
 ## Samples
 
-## 
-![Generated Samples C10 UNET](figures/grid_cifar10_unet_32x32.png)
+<div align="center">
+<img src="figures/grid_cifar10_unet_32x32.png" alt="Generated Samples C10 UNET" width="70%">
 
-*Figure 2: Generated samples from our wavelet diffusion models across different datasets (CIFAR-10, CelebA-HQ, STL-10) showing high-quality image synthesis with reduced computational cost.*
+Figure 2: Uncurated list of samples from the `unet-cifar10-lvl1` model.
 
-## 
-![Generated Samples STL10 UKAN](figures/grid_stl10_ukan_64x64.png)
+</div>
 
-*Figure 3: Generated samples from our wavelet diffusion models across different datasets (CIFAR-10, CelebA-HQ, STL-10) showing high-quality image synthesis with reduced computational cost.*
+
+<div align="center">
+<img src="figures/grid_stl10_ukan_64x64.png" alt="Generated Samples STL10 UKAN" width="70%">
+
+Figure 3: Uncurated list of samples from the `ukan-stl10-lvl1` model
+</div>
+
 
 ## 🚀 Key Features
 
