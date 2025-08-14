@@ -15,12 +15,14 @@ Denoising diffusion models have emerged as a powerful class of deep generative m
 ## Architecture Overview
 <img src="figures/wddpm-diffusion-new.png" alt="Architecture Overview" width="100%">
 
+*Figure 1: Overview of the Wavelet Diffusion Model (WDDM) architecture. The model operates in the wavelet domain, leveraging wavelet decomposition to reduce spatial redundancy and improve training efficiency. The denoising backbone can be a UNet or a KAN-based architecture, allowing for flexible and efficient generative modeling.*
+
 ## Samples
 
 <div align="center">
 <img src="figures/grid_cifar10_unet_32x32.png" alt="Generated Samples C10 UNET" width="70%">
 
-Figure 2: Uncurated list of samples from the `unet-cifar10-lvl1` model.
+*Figure 2: Uncurated list of samples from the `unet-cifar10-lvl1` model.*
 
 </div>
 
@@ -28,7 +30,7 @@ Figure 2: Uncurated list of samples from the `unet-cifar10-lvl1` model.
 <div align="center">
 <img src="figures/grid_stl10_ukan_64x64.png" alt="Generated Samples STL10 UKAN" width="70%">
 
-Figure 3: Uncurated list of samples from the `ukan-stl10-lvl1` model
+*Figure 3: Uncurated list of samples from the `ukan-stl10-lvl1` model*
 </div>
 
 
