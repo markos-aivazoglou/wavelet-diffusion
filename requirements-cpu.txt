@@ -1,0 +1,40 @@
+# Core ML/DL Dependencies - CPU Only
+torch>=2.0.0
+torchvision
+torchaudio
+
+transformers
+diffusers>=0.30.0
+accelerate
+timm
+
+# Wavelet Transform
+pytorch-wavelets
+PyWavelets
+
+# Data & Visualization
+numpy
+matplotlib
+seaborn
+pillow
+datasets
+
+# Evaluation Metrics
+pytorch-fid
+torch-fidelity
+torcheval
+torchmetrics
+clean-fid
+
+# Utility
+tqdm
+einops
+pyyaml
+
+# Jupyter/Development (optional)
+ipython
+ipykernel
+jupyter
+
+# Tensorboard for logging
+tensorboard
