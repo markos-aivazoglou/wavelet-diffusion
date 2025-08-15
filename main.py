@@ -88,10 +88,10 @@ def parse_args():
         help="Dataset to use",
     )
     model_group.add_argument(
-        "--wavelet-levels",
+        "--wavelet-level",
         type=int,
         default=1,
-        help="Number of wavelet transform levels",
+        help="Number of wavelet transform levels (depth of decomposition)",
     )
     model_group.add_argument(
         "--normalize-wavelet",
@@ -148,14 +148,14 @@ def main():
         eval_batch_size=args.eval_batch_size,
         eval_samples=args.eval_samples,
         num_epochs=args.num_epochs,
-        wavelet_level=args.wavelet_levels,
+        wavelet_level=args.wavelet_level,
         normalize_wavelet=args.normalize_wavelet,
     )
     # Create standard diffusion model
     model = ModelFactory.create_model(
         ModelType[args.model_type],
         DatasetName[args.dataset],
-        args.wavelet_levels,
+        args.wavelet_level,
     )
 
     diffusion = WaveletDiffusion(
@@ -163,7 +163,7 @@ def main():
         timesteps=args.num_train_timesteps,
         prediction_type=args.prediction_type,
         image_resolution=resolution,
-        wavelet_levels=args.wavelet_levels,
+        wavelet_level=args.wavelet_level,
         normalize_wavelet=args.normalize_wavelet,
         sampling_mode=SamplingMode(args.sampling_mode),
         with_reconstruction_loss=True,

@@ -1,12 +1,12 @@
 # A Wavelet Diffusion Framework for Accelerated Generative Modeling with Lightweight Denoisers
 
-[![Huggingface](https://img.shields.io/badge/Huggingface-Model%20Hub-blue.svg)](https://huggingface.co/markos-aivazoglou/wavelet-diffusion)
-[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![FAIEMA 2025](https://img.shields.io/badge/FAIEMA-2025-blue)](https://www.faiema.org/)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch 2.0](https://img.shields.io/badge/PyTorch-2.0+-orange)](https://pytorch.org/)
+[![Huggingface](https://img.shields.io/badge/Huggingface-Collections-lightgreen.svg?logo=huggingface)](https://huggingface.co/collections/markos-aivazoglou/wavelet-denoising-diffusion-models-689f184bfca03f567fb18f0a)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightyellow.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![FAIEMA 2025](https://img.shields.io/badge/FAIEMA-2025-lightblue.svg)](https://www.faiema.org/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-pink.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.0](https://img.shields.io/badge/PyTorch-2.0+-lightgreen)](https://pytorch.org/)
 
-This paper has been accepted at the [FAIEMA 2025](https://www.faiema.org/) conference.
+This paper has been accepted at [FAIEMA 2025](https://www.faiema.org/).
 
 ## Abstract
 
@@ -46,9 +46,19 @@ Denoising diffusion models have emerged as a powerful class of deep generative m
 ## 🔧 Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/markos-aivazoglou/wavelet-diffusion.git
+cd wavelet-diffusion
+
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+# Install the required packages
 pip install -r requirements.txt
-# or
-pip install -r requirements-cpu.txt  # For CPU-only installations
+
+# or for CPU-only installations
+pip install -r requirements-cpu.txt  
 ```
 
 ## 📊 Datasets
@@ -59,14 +69,33 @@ The framework supports three main datasets:
 2. **CelebA-HQ**: 256×256 facial images (30,000 samples) 
 3. **STL-10**: 64×64 natural images (100,000 samples)
 
-Datasets will be automatically downloaded when first used.
+CIFAR10 and STL10 will be automatically downloaded when first used. For CELEBA-HQ, you need to download the dataset manually and place it in the `data/celeba-hq` directory. The dataset can be downloaded from [CelebA-HQ](https://www.kaggle.com/datasets/badasstechie/celebahq-resized-256x256/data)
 
 ## 🏃 Quick Start
 
 ### Training a Model
 
+To train a WDDM model, you can either run a plain python command:
 ```bash
-TODO
+python main.py \
+    --model-type UNET \
+    --dataset CIFAR10 \
+    --num-epochs 700 \
+    --train-batch-size 256 \
+    --learning-rate 1e-4 \
+    --wavelet-level 1 \
+    --output-dir ./wddm-cifar10-unet-lvl1
+```
+or with accelerate for distributed training:
+```bash
+accelerate launch --config_file config/single-gpu-config.yaml main.py \
+    --model-type UNET \
+    --dataset CIFAR10 \
+    --num-epochs 700 \
+    --train-batch-size 256 \
+    --learning-rate 1e-4 \
+    --wavelet-level 1 \
+    --output-dir ./wddm-cifar10-unet-lvl1
 ```
 
 ### Sampling with our pretrained models
@@ -81,6 +110,7 @@ python wavelet_sampling.py \
     --scheduler ddpm \
     --sampling-steps 1000 \
     --prediction-type epsilon
+    --device cuda
 
 # Generate samples using DDIM (faster)
 python wavelet_sampling.py \
@@ -93,6 +123,43 @@ python wavelet_sampling.py \
     --prediction-type epsilon
 ```
 
+### Using Pretrained Models
+You can use the pretrained models available on Huggingface Hub or in a local directory, as long as checkpoints are saved with huggingface's `model.save_pretrained("my/local/path")`. For example, to load a pretrained UKAN model for CIFAR-10 and sample with 1000 DDPM sampling steps:
+```python
+from models.UKAN import UKANHybrid
+from diffusion.ddpm import WaveletDiffusion
+
+# Load a pretrained model either from Huggingface Hub or local directory
+model = UKANHybrid.from_pretrained("markos-aivazoglou/wddm-ukan-cifar10-lvl1")
+diffusion = WaveletDiffusion(
+    model=model,
+    wavelet_level=1,
+    prediction_type="epsilon",
+    sampling_mode="ddpm",
+    sampling_steps=1000
+)
+samples = diffusion.sample(batch_size=1)
+# do something with the samples
+```
+or to load a UNet model for CelebA-HQ and sample with 15 DDIM sampling steps:
+```python
+from diffusers import UNet2DModel
+from diffusion.ddpm import WaveletDiffusion
+
+# Load a pretrained model either from Huggingface Hub or local directory
+model = UNet2DModel.from_pretrained("markos-aivazoglou/wddm-unet-celeba-hq-lvl1")
+diffusion = WaveletDiffusion(
+    model=model,
+    wavelet_level=1,
+    prediction_type="sample",
+    sampling_mode="ddim",
+    sampling_steps=15
+)
+samples = diffusion.sample(batch_size=1)
+# do something with the samples
+```
+
+
 ## 📝 Configuration
 
 The framework can run on Huggingface Accelerate for distributed training and inference.
@@ -104,10 +171,10 @@ Training configurations are stored in `config/` directory:
 
 ## 📄 License
 
-This project is licensed under the Creative Commons License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Creative Commons Attribution Non-Commercial Share-Alike (CC-BY-NC-SA 4.0) - see the [LICENSE](LICENSE) file for details.
 
 ## 📚 Citation
-
+TBA
 
 
 ## 👥 Authors

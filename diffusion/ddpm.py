@@ -27,7 +27,7 @@ class WaveletDiffusion(nn.Module):
         model: nn.Module,
         timesteps: int = 1000,
         prediction_type: str = "epsilon",
-        wavelet_levels: int = 1,
+        wavelet_level: int = 1,
         image_resolution: int = 32,
         normalize_wavelet: bool = True,
         with_reconstruction_loss: bool = True,
@@ -57,14 +57,14 @@ class WaveletDiffusion(nn.Module):
                 )
         self.prediction_type = prediction_type
         self.encoder_decoder = DiscreteWaveletTransform(
-            level=wavelet_levels,
+            level=wavelet_level,
             normalize=normalize_wavelet,
         )
-        self.wavelet_levels = wavelet_levels
+        self.wavelet_levels = wavelet_level
         self.with_reconstruction_loss = with_reconstruction_loss
         self.image_resolution = image_resolution
-        self.channels = (lambda x: 4**wavelet_levels * x)(channels)
-        self.sample_size = (lambda x: x // (2**wavelet_levels))(image_resolution)
+        self.channels = (lambda x: 4**wavelet_level * x)(channels)
+        self.sample_size = (lambda x: x // (2**wavelet_level))(image_resolution)
 
     @property
     def device(self):

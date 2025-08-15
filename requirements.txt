@@ -1,7 +1,7 @@
 # Core ML/DL Dependencies - CUDA Enabled
 torch>=2.0.0+cu121
-torchvision+cu121
-torchaudio+cu121
+torchvision
+torchaudio
 
 transformers
 diffusers>=0.30.0

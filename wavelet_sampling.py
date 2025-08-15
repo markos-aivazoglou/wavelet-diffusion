@@ -83,7 +83,7 @@ def parse_args():
     parser.add_argument(
         "--device",
         type=str,
-        default="cpu",
+        default="cuda" if torch.cuda.is_available() else "cpu",
     )
     parser.add_argument(
         "--seed",
@@ -116,7 +116,7 @@ def main():
     diffusion = WaveletDiffusion(
         model=model,
         prediction_type=args.prediction_type,
-        wavelet_levels=args.wavelet_level,
+        wavelet_level=args.wavelet_level,
         image_resolution=args.resolution,
         sampling_mode=args.scheduler,
         sampling_steps=args.sampling_steps,

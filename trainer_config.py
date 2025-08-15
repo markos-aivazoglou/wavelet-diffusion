@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Tuple, Dict, Any
 from dataloading import DatasetName
 from diffusers import UNet2DModel
-from models.ukan.Diffusion.Model_UKAN_Hybrid import UKan_Hybrid
 from models.UKAN import UKANHybrid
 
 
