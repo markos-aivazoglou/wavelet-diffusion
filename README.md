@@ -110,7 +110,6 @@ python wavelet_sampling.py \
     --scheduler ddpm \
     --sampling-steps 1000 \
     --prediction-type epsilon
-    --device cuda
 
 # Generate samples using DDIM (faster)
 python wavelet_sampling.py \
